@@ -1,0 +1,22 @@
+
+@font-face {
+    font-family: 'thsarabunnew';
+    src: url('/font/Quark-Bold.otf'),
+    		url('/font/Quark-Light.otf');
+    	/* 	url('/font/RSU_Regular.ttf'); */
+    	/* 	url('/font/thaisanslite_r1.otf'),
+    		url('/font/thaisanslite_r1.ttf'); */
+    /* 
+    src: url('../fonts/thsarabunnew-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/thsarabunnew-webfont.woff') format('woff'),
+         url('../fonts/thsarabunnew-webfont.ttf') format('truetype'); */
+    font-weight: normal;
+    font-style: normal;
+ 
+}
+html{
+	font-family:"thsarabunnew";
+}
+body,label,a,b,u,i,span,button,h1,h2,h3,h4,h5,h6,u,i,b {
+	font-family:"thsarabunnew";
+}
