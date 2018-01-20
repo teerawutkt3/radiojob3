@@ -12,6 +12,7 @@ use kartik\range\RangeInput;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 use common\models\Joinwork;
+
 $this ->registerJs('
        function loadWork(id){
             $.ajax({
@@ -60,6 +61,8 @@ function listDistricts(){
 ',\yii\web\View::POS_END);
 $this->title = "ค้นหางาน";
 ?>
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArBQOuYHVIZ0ZIJIXJ4n0GW4FtjAUwInk&language=th&libraries=places"></script> -->
+	
 <style>
 
 .panel-body1 {
@@ -97,7 +100,7 @@ $map = new Map([
     'width'=>'100%',
     'height'=>'600',
 ]);
-foreach($dataProvider->models as $data){
+foreach($dataProvider->models as $data):
     $coords = new LatLng(['lat'=>$data->address->lat,'lng'=>$data->address->long]);
     $marker = new Marker(['position'=>$coords]);
     $marker->attachInfoWindow(
@@ -109,7 +112,8 @@ foreach($dataProvider->models as $data){
                   <p>ประกาศเมื่อ '.Yii::$app->formatter->asDatetime($data->work_created_at).'</p>
 
 
-            <button type="button" title="ดูรายละเอียดเพิ่มเติม" class="btn btn-info btn-lg" data-toggle="modal" data-target="#'.$data->id.'">เพิ่มเติม</button>
+            <button type="button" title="ดูรายละเอียดเพิ่มเติม" class="btn btn-info " data-toggle="modal" data-target="#'.$data->id.'">เพิ่มเติม</button>
+            <a href="/work/google-directions?lat='.$data->address->lat.'&long='.$data->address->long.'&name_office='.$data->name_office.'    " class="btn btn-warning"><span class="	glyphicon glyphicon-flag"></span> นำทาง</a>
         '
         ])
         );
@@ -180,7 +184,7 @@ foreach($dataProvider->models as $data){
 
   </div>
 </div>
-<?php }
+<?php endforeach;
 ?>
 <div class="panel panel-default">
 			
@@ -295,8 +299,8 @@ foreach($dataProvider->models as $data){
 <div class="panel panel-info">
     <div class="panel-heading">
     <div class="row">
-    	<div class="col-md-10"><h3 class="panel-title"><i class="glyphicon glyphicon-signal"></i> ค้นหางานจาก Google Map</h3></div>
-    	<div class="col-md-2"><a href="/work/work-search-map" class="btn btn-danger pull-right">Refresh  Map <span class="	glyphicon glyphicon-repeat"></span></a></div>
+    	<div class="col-md-10 col-xs-6"><h3 class="panel-title"><i class="glyphicon glyphicon-signal"></i> ค้นหางานจาก Google Map</h3></div>
+    	<div class="col-md-2 col-xs-6"><a href="/work/work-search-map" class="btn btn-danger pull-right">Refresh  Map <span class="	glyphicon glyphicon-repeat"></span></a></div>
     </div>
     </div>
 

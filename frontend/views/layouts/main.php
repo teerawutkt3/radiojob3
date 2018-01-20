@@ -10,7 +10,6 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use common\models\Joinwork;
-use frontend\assets\AppAsset2;
 
 AppAsset::register($this);
 ?>
@@ -56,11 +55,11 @@ AppAsset::register($this);
                             </span>',
             'encode' => false,
             'url' => ['/work/index']],
-            [ 'label' => '    <span class="glyphicon glyphicon-inbox"><span class="sidebar-menu-item-text"> สมัคร + '.Joinwork::find()->where(['join_status'=>Joinwork::STATUS_WAIT,'created_work'=>Yii::$app->user->id])->count().'</span>
+            [ 'label' => '    <span class="glyphicon glyphicon-inbox"><span class="sidebar-menu-item-text"> สมัคร ('.Joinwork::find()->where(['join_status'=>Joinwork::STATUS_WAIT,'created_work'=>Yii::$app->user->id])->count().')</span>
                             </span>',
                 'encode' => false,
                 'url' => ['/joinwork/inbox-of-radiologist']],
-            [ 'label' => '    <span class="	glyphicon glyphicon-list-alt"><span class="sidebar-menu-item-text"> รายชื่อผู้ที่อยู่ในการทำงาน</span>
+            [ 'label' => '    <span class="	glyphicon glyphicon-list-alt"><span class="sidebar-menu-item-text"> รับสมัครแล้ว</span>
                             </span>',
                 'encode' => false,
                 'url' => ['/joinwork/accept-of-radiologist']],
@@ -122,15 +121,22 @@ AppAsset::register($this);
                             </span>',
                     'encode' => false,
                     'url' => ['user/view?id='.$user]],
+                [ 'label' => '    <span class="glyphicon glyphicon-share">
+                                <i class="icon-dashboard icon-2x"></i><span class="sidebar-menu-item-text"> ออกจากระบบ </span>
+                            </span>',
+                    'encode' => false,
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                 ],
                 //  ['label' => 'โปรไฟล์','url' => ['/user/'.$user]],
                 //  ['label' => ' My work','url' => ['/work/mywork']],
-                '<li class="divider"></li>',
+              /*   '<li class="divider"></li>',
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton('<span class="glyphicon glyphicon-share"></span> ออกจากระบบ',['class'=> 'btn btn-default btn-block logout'])
+                . Html::submitButton('<span class="glyphicon glyphicon-share"></span> ออกจากระบบ',['class'=> 'btn btn-link btn-block logout'])
                 
                 . Html::endForm()
-                . '</li>'
+                . '</li>' */
             ]];
     }
     echo Nav::widget([
@@ -149,13 +155,13 @@ AppAsset::register($this);
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+<!-- <footer class="footer"> -->
+<!--     <div class="container"> -->
+       <!--  <p class="pull-left"> --><!-- &copy; My Company  --><?php  /* date('Y') */ ?><!-- </p> -->
 
-        <p class="pull-right"><?php //echo  Yii::powered() ?></p>
-    </div>
-</footer>
+        <!-- <p class="pull-right"> --><?php //echo  Yii::powered() ?><!-- </p> -->
+<!--     </div> -->
+<!-- </footer> -->
 
 <?php $this->endBody() ?>
 </body>

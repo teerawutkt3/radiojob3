@@ -9,7 +9,6 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
-use frontend\assets\AppAsset2;
 
 AppAsset::register($this);
 ?>
@@ -23,17 +22,7 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>   
-    <style type="text/css">
-        body {
-       background-image: url(/img/home66.jpg); 
-       height: 100%; 
-      height: 100%; 
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    }
-    </style>
+
 </head>
 
 <body class="bg">
@@ -114,13 +103,13 @@ AppAsset::register($this);
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+<!-- <footer class="footer"> -->
+<!--     <div class="container"> -->
+       <!--  <p class="pull-left"> --><!-- &copy; My Company  --><?php  /* date('Y') */ ?><!-- </p> -->
 
-        <p class="pull-right"><?php //echo  Yii::powered() ?></p>
-    </div>
-</footer>
+        <!-- <p class="pull-right"> --><?php //echo  Yii::powered() ?><!-- </p> -->
+<!--     </div> -->
+<!-- </footer> -->
 
 <?php $this->endBody() ?>
 </body>

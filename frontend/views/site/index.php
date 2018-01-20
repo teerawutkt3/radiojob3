@@ -90,11 +90,12 @@ a{
 <!--     <div class="jumbotron"> -->
     
          <h1 class="text-center"><img class="center" alt="" src="/img/logo.png" style="width:15%;  "><br></h1>
+
     <h1 class="text-center"> Radiojob</h1>
         <h2 class="text-center"> ค้นหางานสำหรับนักรังสีเทคนิค</h2><!-- 
         <div class="panel panel-default">
          	<div class="panel-body"> -->
-         		 <h4 class="text-center text-danger">สมัครเข้าใช้งานแล้วกรอกข้อมูลส่วนตัวเพื่อให้ผู้ประกาศเห็นถึงประสบการณ์ทำงานและความสามารถของตัวคุณ</h4>
+         		
       <!--   	</div>
         </div> -->
        
@@ -104,13 +105,17 @@ a{
 
     	
     			<h1 class="text-center"> <a class="button button1 btn-lg " href="/work/work-search-normal"><span class="	glyphicon glyphicon-search"></span> ค้นหางาน  </a></h1>	
-    		
+    		 <h3 class="text-center text-danger">สมัครเข้าใช้งานแล้วกรอกข้อมูลส่วนตัวเพื่อให้ผู้ประกาศเห็นถึงประสบการณ์ทำงานและความสามารถของตัวคุณ</h3>
+    		 <div class="row">
+    		 	<div class="col-md-12 col-xs-12">
     		<h2 class="text-center">
-    			<a href="/site/login" class="btn btn-primary"><span class="	glyphicon glyphicon-pencil"></span> สมัครสมาชิก</a>
-    			<a href="/site/about" class="btn btn-primary"><span class="glyphicon glyphicon-bookmark"></span> เกียวกับเรา</a>
-    			<a href="/contact/create" class="btn btn-primary"><span class="	glyphicon glyphicon-share"></span> ติดต่อเรา</a>
+    			<a href="/site/login" class="btn btn-primary btn-sm"><span class="	glyphicon glyphicon-pencil"></span> เข้าสู่ระบบ</a>
+    			<a href="/site/about" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-bookmark"></span> เกียวกับเรา</a>
+    			<a href="/contact/create" class="btn btn-primary btn-sm"><span class="	glyphicon glyphicon-share"></span> ติดต่อเรา</a>
     			
     		</h2>
+    		</div>
+    		 </div>
    <!--  </div> --> <!-- end jumpo -->
 <!-- 
     <div class="body-content">

@@ -31,11 +31,8 @@ box-shadow: 5px 5px 10px 10px rgba(50,50,50,.4);
                                       <div class="col-md-1"></div>
                                       <div class="col-md-10">
                                       		<h4 class="text-center"><span class="glyphicon glyphicon-home"></span> <?=$model->name_office?></h4>
-                                    		<h5 class="text-center">
-                                    		<span class="glyphicon glyphicon-map-marker"></span> <?=$model->address->province_name?><br><br>
-                                    		<span class="glyphicon glyphicon-calendar"> ประกาศเมื่อ : วันที่ <?=Yii::$app->formatter->asDatetime($model->work_created_at,'d MMM yyyy kk:mm')?></span>
                                     		
-                                    		</h5>
+                                    		<p class="text-center"><span class="glyphicon glyphicon-calendar"> </span> ประกาศเมื่อ : <?=Yii::$app->formatter->asDatetime($model->work_created_at,'dd MMM yyyy kk:mm')?></p>
                                     		
                                     	
                                     	
@@ -45,8 +42,8 @@ box-shadow: 5px 5px 10px 10px rgba(50,50,50,.4);
                                                     	
                                                     		<p><?= Yii::$app->formatter->asNtext($model->description)?></p>
                                                     		
-                                                    		<br><p><span class="glyphicon glyphicon-time"></span><b> เวลาทำงาน : </b><?=Yii::$app->formatter->asTime($model->time_begin,'short')?> 
-                                                    					ถึง <?=Yii::$app->formatter->asTime($model->time_end,'short')?>
+                                                    		<br><p><span class="glyphicon glyphicon-time"></span><b> เวลาทำงาน : </b><?=Yii::$app->formatter->asTime($model->time_begin,'kk:mm')?> 
+                                                    					ถึง <?=Yii::$app->formatter->asTime($model->time_end,'kk:mm')?>
                                                     		</p>
                                                     		<hr>
                                                     	
@@ -54,7 +51,7 @@ box-shadow: 5px 5px 10px 10px rgba(50,50,50,.4);
                                                     		<p><span class="glyphicon glyphicon-check"></span> <b> สวัสดิการ  </b></p>	
                                                     		<p>	 <?= Yii::$app->formatter->asNtext($model->benefits)?></p>	
                                                     		<!-- <p><span class="glyphicon glyphicon-object-align-bottom"></span><b> คุณสมบัติ </b></p> -->
-                                                    		<p><span class="glyphicon glyphicon-education"></span> <b>วุฒิการศึกษา : </b><?=$model->education?></p>
+                                                    		
                                                     			<hr>
                                                     		<p><span class="glyphicon glyphicon-usd"></span> <b> รายได้ : </b>
                                                     				<?php if ($model->money2 ==NULL){
@@ -76,7 +73,7 @@ box-shadow: 5px 5px 10px 10px rgba(50,50,50,.4);
                                                                         'title'=>'ลบ',
                                                                         'class' => 'btn btn-danger 	glyphicon glyphicon-trash',
                                                                         'data' => [
-                                                                            'confirm' => 'Are you sure you want to delete this item?',
+                                                                            'confirm' => 'ยืนยันการลบ',
                                                                             'method' => 'post',
                                                                         ],
                                                                     ]) ?>
@@ -120,7 +117,7 @@ box-shadow: 5px 5px 10px 10px rgba(50,50,50,.4);
 					<?php echo "ยังไม่มีผู้สมัคร "?>
 					<?php }else{ ?>
                   	<?php foreach ($join_work as $data):?>
-					<a href="/user/view?id=<?=$data->user_id?>" target="_blank" title="ดูโปรไฟล์"> <?=$data->user->fullName?> <?=Yii::$app->formatter->asDate($data->join_created_at)?></a>
+					<h5><a href="/user/view?id=<?=$data->user_id?>" target="_blank" title="ดูโปรไฟล์"> <?=$data->user->fullName?> <?=Yii::$app->formatter->asDate($data->join_created_at)?></a>
 					<div class="pull-right">
 					<!-- <span class="label label-success "> เคยร่วมงาน</span>  -->
 					<?php if(Yii::$app->user->can('radiologist')){?>
@@ -136,7 +133,7 @@ box-shadow: 5px 5px 10px 10px rgba(50,50,50,.4);
                  	                                    ],
                  	                                ]);?>	
 					<?php }?>                 	                                
-                 	   </div>                     
+                 	   </div>  </h5>                   
 					<?php endforeach; }?>
 					<?php }?>
 					

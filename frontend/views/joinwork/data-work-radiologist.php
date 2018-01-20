@@ -4,7 +4,7 @@ use yii\widgets\Pjax;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-$this->title = 'รายการสมัคร';
+$this->title = 'งานทั้งหมด';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
@@ -54,7 +54,7 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
         <th class="text-center">ชื่อสถานที่ทำงาน</th>
         <th class="text-center">ชื่อ - นามสกุล</th>
         <th class="text-center">สมัครเมื่อ</th>
-        <th class="text-center">สถานนะ</th>
+        <th class="text-center">สถานะ</th>
         <th style ="width:17%"></th>
       </tr>
     </thead>
@@ -65,7 +65,7 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
       <td class="text-center"><?=++$count?></td>
         <td><?=$data->work->name_office?></td>
         <td><?=$data->user->fullname?></td>
-        <td><?=Yii::$app->formatter->asDatetime($data->join_created_at)?></td>
+        <td><?=Yii::$app->formatter->asDatetime($data->join_updated_at)?></td>
         <td class="text-center"><?php   if ($data->join_status == Joinwork::STATUS_WAIT ) {
                  	                            echo  '<span class="label label-warning">รอการยืนยัน</span>';
         }else if ($data->join_status == Joinwork::STATUS_ACTION){

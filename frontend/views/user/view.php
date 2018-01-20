@@ -3,11 +3,13 @@ use yii\helpers\Html;
 use kartik\tabs\TabsX;
 use yii\helpers\Url;
 use yii\web\View;
+use yii\widgets\ActiveForm;
+use kartik\file\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 
-$this->title = $model->username;
+$this->title = $model->fullname;
 $this->params['breadcrumbs'][] = $this->title;
 $this ->registerJs('
        function loadWork(id){
@@ -45,12 +47,13 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
           		        'title'=>'กำหนดกิจกรรมที่จะมาถึง'
           		    ])?>
           		     <?php //echo  Html::a('', '/joinwork/radiologist-join', ['title'=>'กำหนดกิจกรรมที่จะมาถึง','class' => 'btn btn-warning  glyphicon glyphicon-list-alt']) ?>
-                     <?=Html::a('', ['/user/resume?id='.$model->id], [
+                     <?php  echo Html::a('', ['/user/resume?id='.$model->id], [
                         'class'=>'btn btn-info  glyphicon glyphicon-print', 
                         'target'=>'_blank', 
                         'data-toggle'=>'tooltip', 
                         'title'=>'print resume'
-                    ]);?>
+                    ]); ?>
+                    
                     <?= Html::a('', ['update', 'id' => $model->id], ['title'=>'แก้ไข','class' => 'btn btn-success     	glyphicon glyphicon-pencil']) ?>
                     </div><?php }?>
 		</div>
@@ -64,22 +67,32 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
     <div class="row">
     
       
-             	<div class="col-md-3"> 
+             	<div class="col-md-4"> 
              	  
                  	<div class="panel panel-default">
                 		 <div class="panel-body ">  
                 		 <?php if (!$model->fb_id){?>
-                		 <img data-src="holder.js/100px280/thumb" alt="100%x280" style="height: 200px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22356%22%20height%3D%22280%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20356%20280%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15fe3485b62%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A18pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15fe3485b62%22%3E%3Crect%20width%3D%22356%22%20height%3D%22280%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22131.2890625%22%20y%3D%22148.1%22%3E356x280%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
-                		     
+                		 <?php if (!$model->img ||$model->img == ""){?>
+                		 <img data-src="holder.js/300px280/thumb" alt="100%x280" style="height: 300px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22356%22%20height%3D%22280%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20356%20280%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15fe3485b62%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A18pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15fe3485b62%22%3E%3Crect%20width%3D%22356%22%20height%3D%22280%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22131.2890625%22%20y%3D%22148.1%22%3E356x280%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
+                		  <?php }else{
+                                    echo  Html::img('/img/user/'.$model->img,['style'=>'height: 100%;width:100%']);
+                		     }?>
                 		<?php  } else{?>
-                		 <?= Html::img('https://graph.facebook.com/'.$model->fb_id.'/picture?type=large',['class' => 'thumbnail img-rounded img-responsive','width'=>300])?>
-                		 		
-                		 <?php }?>
+                            		 <?php if (!$model->img || $model->img == ""){?>
+                            		  <?= Html::img('https://graph.facebook.com/'.$model->fb_id.'/picture?type=large',['class' => 'thumbnail img-rounded img-responsive','width'=>'100%'])?>
+                            		 <?php }else{?>
+                            		<?= Html::img('/img/user/'.$model->img,['style'=>'height: 100%;width:100%'])?>
+                            		<?php }?>
+                		
                 		 		<h4 class="text-center">
-                		 		<a href="https://www.facebook.com/<?=$model->fb_id?>" target="_blank" class="btn btn-primary">facebook</a></h4>
+                		 		<a href="https://www.facebook.com/<?=$model->fb_id?>" target="_blank" class="btn btn-info">facebook</a></h4>
                 		 	
+                		 <?php }?>
+                		 		
                 		 	<h4 class="text-center">  <?=$model->fname." ".$model->lname?></h4>
+                		 	<p class="text-center"><span class="glyphicon glyphicon-phone"></span> เบอร์ติดต่อ : <?=(!$user_extention ? "" : $user_extention->tel) ?></p>
                 		 	<p class="text-center"> <span class="glyphicon glyphicon-envelope"></span> <?=$model->email?> 	</p>
+                		 	<p class="text-center"><span class="glyphicon glyphicon-calendar"></span> เกิดวันที่ : <?=(!$user_extention ? "" :Yii::$app->formatter->asDate($user_extention->birth,'d MMM yyyy'))?></p>
                 		 	<p class="text-center"> <span class="glyphicon glyphicon-map-marker"> </span> ที่อยู่ 
                                 <?php 
                                         if (!$model->address_id){
@@ -89,10 +102,19 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
                                         
                                         }
                                 ?></p>
+                              <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+
+                                    <?= $form->field($model, 'img')->widget(FileInput::classname(), [
+                                        'options' => ['accept' => 'image/*'   ],
+                                        ]);?>
+                                
+                                  
+                                
+                                <?php ActiveForm::end() ?>
                 		  </div>
                 	</div>
              </div>
-             	<div class="col-md-9">
+             	<div class="col-md-8">
           			<div class="panel panel-default">
            			  <div class="panel-body  ">
            			  <?php $content ="ไม่ได้ระบุ" ; ?>    

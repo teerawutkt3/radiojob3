@@ -4,6 +4,7 @@ use yii\widgets\Pjax;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\Work;
 
 $this->title = 'ผู้สมัคร';
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,9 +25,9 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
  <div class="row">
 <div class="form-group pull-right">
 <?= Html::a('<span class= "glyphicon glyphicon-file"></span> ประกาศ+ ', ['/work/create'], ['title'=>'ประกาศงาน','class' => 'btn btn-info ']) ?> 
-<?=Html::a(' <span class="glyphicon  glyphicon-inbox"></span> สมัคร '.($inbox==0?"":"+".$inbox),'/joinwork/inbox-of-radiologist',['class' => 'btn  btn-danger 	'])?> 
-<?=Html::a('<span class="	glyphicon glyphicon-th-list"></span> อยู่ในการทำงาน','/joinwork/accept-of-radiologist',['class' => 'btn  btn-success'])?> 
-<?=Html::a('<span class="	glyphicon glyphicon-list-alt"></span> รายชื่อผู้ร่วมงาน','/joinwork/success-of-radiologist',['class' => 'btn  btn-primary'])?> 
+<?=Html::a(' <span class="glyphicon  glyphicon-inbox"></span> สมัคร '.($inbox==0?"":"(".$inbox.")"),'/joinwork/inbox-of-radiologist',['class' => 'btn  btn-danger 	'])?> 
+<?=Html::a('<span class="	glyphicon glyphicon-th-list"></span> รับสมัครแล้ว','/joinwork/accept-of-radiologist',['class' => 'btn  btn-success'])?> 
+<?=Html::a('<span class="	glyphicon glyphicon-list-alt"></span> รายชื่อผู้เคยร่วมงาน','/joinwork/success-of-radiologist',['class' => 'btn  btn-primary'])?> 
 </div>
 </div>
 <?php Pjax::begin(['enablePushState'=>false // ปิดเพื่อให้ tatget="_blank" ทำงาน
@@ -52,7 +53,7 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
         <th class="text-center">ชื่อสถานที่ทำงาน</th>
         <th class="text-center">ชื่อ - นามสกุล</th>
         <th class="text-center">สมัครเมื่อ</th>
-        <th class="text-center">สถานนะ</th>
+        <th class="text-center">สถานะ</th>
         <th style ="width:20%"></th>
       </tr>
     </thead>
@@ -73,28 +74,111 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
         <td>
         <?= Html::a(' ','/user/view?id='.$data->user_id, [
                  	                                    'class'=>'btn btn-default    	glyphicon glyphicon-user',
-                 	                                    'title'=>'ดูรายละเอียด'
+                 	                                    'title'=>'ดูรายละเอียดผู่้สมัคร'
                  	                                ]);?>
         <?= Html::a(' ','/work/view?id='.$data->work_id, [
                  	                                    'class'=>'btn btn-info     glyphicon glyphicon-eye-open',
-                 	                                    'title'=>'ดูรายละเอียด'
+                 	                                    'title'=>'ดูรายละเอียดงาน'
                  	                                ]);?>
-		<?=   Html::a('',['/joinwork/acceptjoin?id='.$data->id],[
+		<?php  /*  Html::a('',['/joinwork/acceptjoin?id='.$data->id],[
                  	                                    'class' => 'btn btn-success glyphicon glyphicon-ok',
                  	                                    'title' => 'รับสมัคร',
                  	                                    'data' => [
                  	                                        'confirm' => 'ยืนยันการรับสมัคร',
                  	                                        'method' => 'post',
                  	                                    ],
-                 	                                ]);?>                 	                                
-		<?=   Html::a('', 'delete?id='.$data->id, [
+                 	                                ]); */?>        
+		<!-- Trigger the modal with a button -->
+		<?php
+		//$close_join_work_where_acception = Joinwork::find()->where(['work_id'=>$data->work_id,'join_status'=>Joinwork::STATUS_ACTION])->count();
+	//	$close_join_work_where_success = Joinwork::find()->where(['work_id'=>$data->work_id,'join_status'=>Joinwork::STATUS_SUCCESS])->count();
+		//$close_join_work = $close_join_work_where_acception+$close_join_work_where_success;
+		$work = Work::find()->where(['id'=>$data->work_id])->one();
+		if ($work->work_status == Work::STATUS_DELETED){?>
+		<button type="button" class="btn btn-success" disabled="disabled" ><span class=" glyphicon glyphicon-ok "></span></button>
+		<?php } else{?>
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ok<?=$data->id?>"><span class=" glyphicon glyphicon-ok "></span></button>
+      <?php }?>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?=$data->id?>"><span class=" glyphicon glyphicon-trash "></span></button>                                                                    
+                                                                                  	                                         	                                
+		<?php  /*  Html::a('', 'delete?id='.$data->id, [
                  	                                        'class'=>'btn btn-danger glyphicon glyphicon-trash',
                  	                                        'title'=>'ลบ',    
                  	                                        'data' => [
                  	                                            'confirm' => 'ยืนยันการลบ',
                  	                                            'method' => 'post',
                  	                                        ],
-                 	                                    ]);?>                 	                           
+                 	                                    ]); */?>    
+                 	                                    
+                 	                                           <!-- Modal OK-->
+                                                                            <div class="row">
+                                                                            	<div class="col-md-3">
+                                                                            	<div id="ok<?=$data->id?>" class="modal fade" role="dialog">
+                                                                              <div class="modal-dialog">
+                                                                            
+                                                                                <!-- Modal content-->
+                                                                                <div class="modal-content">
+                                                                                  
+                                                                                  <div class="modal-body">
+                                                                                    <h3 class="text-center">ยืนยันการรับสมัคร</h3>
+                                                                                    <div class="row">
+                                                                                    <div class="col-md-3"></div>
+                                                                                    <div class="col-md-3">
+                                                                                    <a class="btn btn-success btn-lg btn-block " href="/joinwork/acceptjoin?id=<?=$data->id?>"   method="post"  >   <span class="	glyphicon glyphicon-ok-sign"></span> ตกลง</a>
+                                                                                  
+                                                                                    </div>
+                                                                                    <div class="col-md-3">   
+                                                                                    <button type="reset" class="btn btn-danger btn-lg btn-block" data-dismiss="modal"> 
+                                                                                    <span class="	glyphicon glyphicon-remove-sign"></span> ยกเลิก</button>
+                                                                                    </div>
+                                                                                    <div class="col-md-3"></div><br><br><br><br>
+                                                                                 </div>
+                                                                                  </div>
+                                                                             
+                                                                                </div>
+                                                                            
+                                                                              </div>
+                                                                            </div>
+                                                                            	</div>
+                                                                            </div>    <!-- end Modal -->
+                                                                              <!-- Modal OK-->
+                                                                            <div class="row">
+                                                                            	<div class="col-md-3">
+                                                                            	<div id="delete<?=$data->id?>" class="modal fade" role="dialog">
+                                                                              <div class="modal-dialog">
+                                                                            
+                                                                                <!-- Modal content-->
+                                                                                <div class="modal-content">
+                                                                                  
+                                                                                  <div class="modal-body">
+                                                                                    <h3 class="text-center">ยืนยันการลบ</h3>
+                                                                                    <div class="row">
+                                                                                    <div class="col-md-3"></div>
+                                                                                    <div class="col-md-3">
+                                                                                   
+                                                                                  	<?=  Html::a('<span class="	glyphicon glyphicon-ok-sign"></span> ตกลง', 'delete?id='.$data->id, [
+                                                 	                                        'class'=>'btn btn-success btn-lg btn-block ',
+                                                 	                                        'title'=>'ลบ',    
+                                                 	                                        'data' => [
+                                                 	                                          
+                                                 	                                            'method' => 'post',
+                                                 	                                        ],
+                                                 	                                    ]); ?>    
+                                                                                    </div>
+                                                                                    <div class="col-md-3">   
+                                                                                    <button type="reset" class="btn btn-danger btn-lg btn-block" data-dismiss="modal"> 
+                                                                                    <span class="	glyphicon glyphicon-remove-sign"></span> ยกเลิก</button>
+                                                                                    </div>
+                                                                                    <div class="col-md-3"></div><br><br><br><br>
+                                                                                 </div>
+                                                                                  </div>
+                                                                             
+                                                                                </div>
+                                                                            
+                                                                              </div>
+                                                                            </div>
+                                                                            	</div>
+                                                                            </div>       <!-- end Modal -->           	                	                           
         </td>
      </tr>
 	<?php }?>

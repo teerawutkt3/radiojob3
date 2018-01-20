@@ -1,16 +1,13 @@
 <?php
 
-use kartik\range\RangeInput;
-use yii\widgets\Pjax;
-use yii\helpers\Html;
-use yii\web\View;
-use yii\helpers\Url;
-use kartik\label\LabelInPlace;
-use yii\helpers\ArrayHelper;
-use common\models\Work;
-use common\models\Geography;
 use common\models\Belong;
+use common\models\Geography;
 use common\models\Joinwork;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\View;
+use yii\widgets\Pjax;
 
 $this ->registerJs('
        function loadWork(id){
@@ -219,10 +216,10 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
                     </div>
 			</div>
 </div>
-<div class="row">
+<div class="row"  style="overflow-x  : scroll;">
 			<table class="table table-striped table-hover table-bordered">
 					<thead>
-					<th>ลำดับ</th><th>ชื่อสถานที่ทำงาน</th><th>จังหวัด</th><th>รายละเอียด</th><th>รายได้</th><th>หน่วยงาน</th><th>เวลาประกาศ</th><th></th>
+					<th>ลำดับ</th><th>ชื่อสถานที่ทำงาน</th><th>จังหวัด</th><th>รายละเอียด</th><th>รายได้</th><th>หน่วยงาน</th><th>เวลาประกาศ</th><th  style="width:17%;"></th>
 					</thead>
 					<tbody>
 					  <?php $number=0?>
@@ -304,7 +301,7 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
                                                                       		<h4 class="text-center"><span class="glyphicon glyphicon-home"></span> <?=$data->name_office?></h4>
                                                                     		<h5 class="text-center">
                                                                     		<span class="glyphicon glyphicon-map-marker"></span> <?=$data->address->province_name?><br><br>
-                                                                    		<span class="glyphicon glyphicon-calendar"> ประกาศเมื่อ : วันที่ <?=Yii::$app->formatter->asDatetime($data->work_created_at,'d MMM yyyy kk:mm')?></span>
+                                                                    		<span class="glyphicon glyphicon-calendar"></span> ประกาศเมื่อ : วันที่ <?=Yii::$app->formatter->asDatetime($data->work_created_at,'d MMM yyyy kk:mm')?>
                                                                     		
                                                                     		</h5>
                                                                     		<p ><span class="glyphicon glyphicon-pushpin"></span> <b>หน่วยงาน  : </b><?=$data->belong?></p>

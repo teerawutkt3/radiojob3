@@ -21,9 +21,9 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
     </div>
 <div class="form-group pull-right">
 <?= Html::a('<span class= "glyphicon glyphicon-file"></span> ประกาศ+', ['/work/create'], ['title'=>'ประกาศงาน','class' => 'btn btn-info ']) ?> 
-<?=Html::a(' <span class="glyphicon  glyphicon-inbox"></span> สมัคร '.($inbox==0?"":"+".$inbox),'/joinwork/inbox-of-radiologist',['class' => 'btn  btn-danger 	'])?> 
-<?=Html::a('<span class="	glyphicon glyphicon-th-list"></span> อยู่ในการทำงาน','/joinwork/accept-of-radiologist',['class' => 'btn  btn-success'])?> 
-<?=Html::a('<span class="	glyphicon glyphicon-list-alt"></span> รายชื่อผู้ร่วมงาน','/joinwork/success-of-radiologist',['class' => 'btn  btn-primary'])?> 
+<?=Html::a(' <span class="glyphicon  glyphicon-inbox"></span> สมัคร '.($inbox==0?"":"(".$inbox.")"),'/joinwork/inbox-of-radiologist',['class' => 'btn  btn-danger 	'])?> 
+<?=Html::a('<span class="	glyphicon glyphicon-th-list"></span> รับสมัครแล้ว','/joinwork/accept-of-radiologist',['class' => 'btn  btn-success'])?> 
+<?=Html::a('<span class="	glyphicon glyphicon-list-alt"></span> รายชื่อผู้เคยร่วมงาน','/joinwork/success-of-radiologist',['class' => 'btn  btn-primary'])?> 
 </div>
 <?php Pjax::begin(['enablePushState'=>false // ปิดเพื่อให้ tatget="_blank" ทำงาน
 ]);  ?>

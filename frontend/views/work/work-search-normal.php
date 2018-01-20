@@ -4,11 +4,9 @@ use yii\widgets\Pjax;
 use yii\helpers\Html;
 use yii\web\View;
 use yii\helpers\Url;
-use kartik\label\LabelInPlace;
 use yii\helpers\ArrayHelper;
 use common\models\Geography;
 use common\models\Belong;
-use yii\bootstrap\Dropdown;
 
 $this ->registerJs('
        function loadWork(id){

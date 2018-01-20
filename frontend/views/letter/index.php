@@ -27,8 +27,8 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
 		   <?php $form = ActiveForm::begin(); ?>
 				<div class="row">
 				<div class="col-md-6"><br>	
-				<?=Html::a('การตอบกลับ','/letter/index',['class'=>'btn btn-primary'])?>
-					<?=Html::a('จดหมายที่ส่งแล้ว','/letter/send-total',['class'=>'btn btn-success'])?>
+				<?=Html::a('<span class="	glyphicon glyphicon-envelope"></span> การตอบกลับ','/letter/index',['class'=>'btn btn-info'])?>
+					<?=Html::a('<span class="	glyphicon glyphicon-send"></span> จดหมายที่ส่งแล้ว','/letter/send-total',['class'=>'btn btn-success'])?>
 				</div>
 					<div class="col-md-5">
 					<?= $form->field($searchModel, 'nameSearch')->textInput(['maxlength' => true,'placeholder'=> 'ค้นหาผู้ส่ง']) ?>

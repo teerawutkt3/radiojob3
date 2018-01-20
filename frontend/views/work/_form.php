@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 use common\models\Geography;
 use kartik\time\TimePicker;
 use common\models\Belong;
+use kartik\alert\Alert;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Work */
@@ -53,13 +54,30 @@ function listDistricts(){
 ?>
 
 <div class="work-form">
-
+<?php
+if ($_GET){
+       
+            if (isset( $_GET['alert']) == false){
+                // ถ้าไม่มี aler_active
+              
+            }else{ 
+                  echo Alert::widget([
+                        'options' => [
+                        'class' => 'alert-danger',
+                        ],
+                        'body' => 'กรุณาระบุที่อยู่ให้ครบ',
+                        ]);
+            }
+}else{
+            
+}
+?>
     <?php $form = ActiveForm::begin(); ?>
 	<div class="row">
 		<div class="col-md-6">
 			<div class="row">
 				<div class="col-md-7"> <?= $form->field($model, 'name_office')->textInput(['maxlength' => true,'placeholder'=>'ชื่อสถานที่ทำงาน']) ?></div><br>
-				<div class="col-md-3"><?php //echo Html::a('ระบุตำแหน่งเพื่อให้เห็นถึงพื้นที่ <span class="	glyphicon glyphicon-map-marker"></span>','/work/map',['class'=>'btn btn-warning'])?> </div>
+				<div class="col-md-3"><?php //echo Html::a('ระบุตำแหน่งเพื่อให้เห็นถึงพื้นที่ <span class="	glyphicon glyphicon-map-marker"></span>','/work/location',['class'=>'btn btn-success'])?> </div>
 			</div>
 		   
             <?= $form->field($model, 'description')->textarea(['rows' => 20,'placeholder'=>'รายละเอียดของงาน']) ?>
@@ -68,7 +86,7 @@ function listDistricts(){
             	           ArrayHelper::map(Belong::find()->all(),'name_belong', 'name_belong'),
             	           ['prompt' => 'หน่วยงาน / สังกัด',]
             	    )?></div>
-            	<div class="col-md-3"><br><?= Html::a('เพิ่มหน่วยงาน +', ['/belong/create'], ['class'=>'btn btn-warning btn-xs']) ?></div>  
+            	<div class="col-md-3"><br><?= Html::a('เพิ่มหน่วยงาน +', ['/belong/create'], ['class'=>'btn btn-success btn-xs']) ?></div>  
             	<div class="col-md-3">  <?= $form->field($model, 'number')->textInput(['placeholder'=>'จำนวนรับสมัคร']) ?></div>
             </div>
            
@@ -158,10 +176,22 @@ function listDistricts(){
       </div>  
 		</div>
 	</div>
-
+	<div class="row">
+	<?php if ($_GET){
+	           if (!isset($_GET['lat'])){
+	              // var_dump("top");die();   
+	           }else{
+    	           $lat = $_GET['lat'];
+    	           $long = $_GET['long'];
+                   echo $form->field($address, 'lat')->hiddenInput(['value'=>$lat]);
+                   echo $form->field($address, 'long')->hiddenInput(['value'=>$long]);
+	           }
+	}?>
+		
+	</div>
     <div class="row">
     	<div class="col-md-4"></div>
-    	<div class="col-md-2"><?= Html::submitButton($model->isNewRecord ? 'ประกาศ' : 'บันทึก', ['class' => $model->isNewRecord ? 'btn btn-primary btn-block' : 'btn btn-primary btn-block']) ?></div>
+    	<div class="col-md-2"><?= Html::submitButton($model->isNewRecord ? 'ประกาศ' : 'บันทึก', ['class' => $model->isNewRecord ? 'btn btn-success btn-block' : 'btn btn-primary btn-block']) ?></div>
     	<div class="col-md-2"><a href="/work/index" class="btn btn-block btn-default">ยกเลิก</a></div>
     	<div class="col-md-4"></div>
     </div>

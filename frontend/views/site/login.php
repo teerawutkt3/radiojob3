@@ -30,10 +30,10 @@ box-shadow: 5px 5px 10px 10px rgba(50,50,50,.4);
     <div class="row">
     <div class="col-lg-4"></div>
         <div class="col-lg-4">
-               <h3 class="text-center">เข้าสู่ระบบด้วย facebook</h3>
+               <h3 class="text-center">เข้าสู่ระบบด้วย </h3>
                	<div class="row">
-               		<div class="col-md-4"></div>
-               		<div class="col-md-4">
+               		<div class="col-md-3  col-xs-3"></div>
+               		<div class="col-md-6">
                		 <?php  echo AuthChoice::widget(['baseAuthUrl' => ['site/auth'] ]);?>
                		</div>
                	</div>

@@ -6,6 +6,8 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\helpers\ArrayHelper;
 use common\models\Geography;
+use kartik\alert\Alert;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
@@ -50,17 +52,56 @@ function listDistricts(){
     View::POS_HEAD);
 
 ?>
-
+<?php
+if ($_GET){
+       
+            if (isset( $_GET['alert']) == false){
+                // ถ้าไม่มี aler_active
+              
+            }else{ 
+                  echo Alert::widget([
+                        'options' => [
+                        'class' => 'alert-danger',
+                        ],
+                        'body' => 'กรุณาระบุที่อยู่ให้ครบ',
+                        ]);
+            }
+}else{
+            
+}
+?>
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    
+		 <?= $form->field($model, 'username')->hiddenInput()->label(false) ?>
 	<div class="row"><div class="col-md-5">
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'fname')->textInput(['maxlength' => true]) ?>
-
+	<div class="row">
+		<div class="col-md-6">
+		<?= $form->field($model, 'fname')->textInput(['maxlength' => true]) ?>
+		</div>
+		<div class="col-md-6">
+		
     <?= $form->field($model, 'lname')->textInput(['maxlength' => true]) ?>
-
+		
+		</div>
+	</div>
+   <div class="row">
+		<div class="col-md-6">
+		<?= $form->field($user_extention, 'tel')->textInput(['placeholder'=>'เบอร์ติดต่อ']) ?>
+		</div>
+		<div class="col-md-6">
+              <?= $form->field($user_extention, 'birth')->widget(DatePicker::classname(), [
+                  'attribute' => 'birth',
+                  'value' => 'd-m-yyyy',
+                        	'options' => ['placeholder' => 'วันที่เกิด'],
+                        	'pluginOptions' => [
+                        		'autoclose' => true,
+                        	    'format' => ' d-m-yyyy '
+                        	]
+                        ]);?>
+		</div>
+ </div>
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($address, 'data_address')->textarea(['rows' => '6']) ?>
@@ -76,7 +117,7 @@ function listDistricts(){
                             		]) ?></div>
             <div class="col-md-6"><?= $form->field($address, 'province_id')->
                             dropDownList([],
-                            		[
+                            		[ 
                             				'id' => 'province_id',
                             				//'prompt' => 'จังหวัด',
                             		        'onChange'=>'listAmphures()'
@@ -119,13 +160,13 @@ function listDistricts(){
     </div> <!-- end row -->
 
                   
-
+ 
 
 	<div class="row">
 			<div class="col-md-4"></div>
 			<div class="col-md-2">
 					<div class="form-group">
-                        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'ตกลง', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary btn-block']) ?>
+                        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'ตกลง', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success btn-block']) ?>
                     </div>
 			</div>
 			<div class="col-md-2">

@@ -27,11 +27,8 @@ box-shadow: 5px 5px 5px 5px rgba(50,50,50,.4);
 										<div class="col-md-10">
 										<span class="label label-info glyphicon glyphicon-user">จำนวนผู้สมัคร : <?=$count_join?> </span> 
                                       		<h4 class="text-center"><span class="glyphicon glyphicon-home"></span> <?=$model->name_office?></h4>
-                                    		<h5 class="text-center">
-                                    		<span class="glyphicon glyphicon-map-marker"></span> <?=$model->address->province_name?><br><br>
-                                    		<span class="glyphicon glyphicon-calendar"> ประกาศเมื่อ : วันที่ <?=Yii::$app->formatter->asDatetime($model->work_created_at,'d MMM yyyy kk:mm')?></span>
-                                    		
-                                    		</h5>
+                                    	
+                                    		<p class="text-center"><span class="glyphicon glyphicon-calendar"></span> ประกาศเมื่อ : <?=Yii::$app->formatter->asDatetime($model->work_created_at,'dd MMM yyyy kk:mm')?></p>
                                     		<p ><span class="glyphicon glyphicon-pushpin"></span> <b>หน่วยงาน  : </b><?=$model->belong?></p>
                                     		<p ><span class="	glyphicon glyphicon-ok-sign"></span> <b>รับสมัครจำนวน  : </b><?=$model->number?> ตำแหน่ง</p>
                                                     		<b><span class="glyphicon glyphicon-list-alt"></span> รายละเอียด</b>

@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'email') ?>
                 
                 <?= $form->field($model, 'fb_id')->hiddenInput()->label(false) ?>
+                  <?= $form->field($model, 'gmail_id')->hiddenInput()->label(false) ?>
                 <div class="row">
                 	<div class="col-md-4">
                 				<div class="panel panel-primary">

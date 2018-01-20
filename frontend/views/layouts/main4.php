@@ -9,7 +9,6 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
-use frontend\assets\AppAsset2;
 
 AppAsset::register($this);
 ?>
@@ -26,7 +25,7 @@ AppAsset::register($this);
         <style>
 
     body {
-       background-image: url(/img/home6.jpg); 
+       background-image: url(/img/home66.jpg); 
        height: 100%; 
       height: 100%; 
     /* Center and scale the image nicely */
