@@ -12,12 +12,14 @@ use frontend\models\JoinworkInboxSearch;
 use frontend\models\JoinworkAcceptSearch;
 use frontend\models\JoinworkSuccessSearch;
 use common\models\Work;
+use yii\filters\AccessControl;
 
 /**
  * JoinworkController implements the CRUD actions for Joinwork model.
  */
 class JoinworkController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -30,16 +32,43 @@ class JoinworkController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'actions' => [
+                        ],
+                        'roles' => ['?'] //ยังไม่ได้ login
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    
+                ]
+            ]
         ];
     }
     
     public function actionRegister($id){
+        if (\Yii::$app->user->isGuest){ //ไม่ได้ login
+           return $this->redirect('/site/login');
+        }else{
+           // var_dump(\Yii::$app->user->id);
+           // var_dump(\Yii::$app->user->can('public_relations'));
+           // die();
+               if (\Yii::$app->user->can('public_relations')){
+                     return $this->redirect('/work/index');
+                 }
+        }
          $model = new Joinwork();
          $model->work_id = $id;
          $model->created_work   = $model->work->work_user_id; 
          $model->user_id = \Yii::$app->user->id;
          $model->join_status = Joinwork::STATUS_WAIT;
-        if ( $model->save())   return $this->redirect('/work/work-search-normal');
+        if ( $model->save())   return $this->redirect('/joinwork/data-work-radiologist');
         else  throw new NotFoundHttpException('ไม่สามารถทำการบันทึกได้');
     }
     
@@ -48,8 +77,9 @@ class JoinworkController extends Controller
         $model->join_status = Joinwork::STATUS_ACTION;
        
         if ($model->save()){
-            $close_join_work = Joinwork::find()->where(['work_id'=>$model->work_id,'join_status'=>Joinwork::STATUS_ACTION])->count();
-            
+            $close_join_work_where_acception = Joinwork::find()->where(['work_id'=>$model->work_id,'join_status'=>Joinwork::STATUS_ACTION])->count();
+            $close_join_work_where_success = Joinwork::find()->where(['work_id'=>$model->work_id,'join_status'=>Joinwork::STATUS_SUCCESS])->count();
+            $close_join_work = $close_join_work_where_acception+$close_join_work_where_success;
             $work = Work::find()->where(['id'=>$model->work_id])->one();
             //   var_dump($close_join_work); echo"<br>"; var_dump($work);die();
             if ($close_join_work == $work->number){

@@ -29,7 +29,8 @@
         "2amigos/yii2-google-maps-library": "*",
         "philippfrenzel/yii2fullcalendar": "*",
         "kolyunya/yii2-map-input-widget": "^1.1",
-        "kartik-v/yii2-widget-typeahead": "*"
+        "kartik-v/yii2-widget-typeahead": "*",
+        "appotter/mpdf": "^6.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

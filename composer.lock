@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ff34dfbd0b4bcdcd86b221ab28031df",
+    "content-hash": "d6c965f9953e8d17172782a617bfdc29",
     "packages": [
         {
             "name": "2amigos/yii2-google-maps-library",
@@ -55,6 +55,92 @@
                 "yii"
             ],
             "time": "2016-10-11T08:35:17+00:00"
+        },
+        {
+            "name": "appotter/jpgraph",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/appotter/jpgraph.git",
+                "reference": "edcfa68c898a002f59f9c79b833c47a9b9d33951"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/appotter/jpgraph/zipball/edcfa68c898a002f59f9c79b833c47a9b9d33951",
+                "reference": "edcfa68c898a002f59f9c79b833c47a9b9d33951",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JpGraph": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "QPL 1.0"
+            ],
+            "authors": [
+                {
+                    "name": "JpGraph team"
+                }
+            ],
+            "description": "jpGraph, library to make graphs and charts",
+            "homepage": "http://jpgraph.net",
+            "keywords": [
+                "chart",
+                "data",
+                "graph",
+                "jpgraph",
+                "pie"
+            ],
+            "time": "2017-07-07T09:57:03+00:00"
+        },
+        {
+            "name": "appotter/mpdf",
+            "version": "6.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/appotter/mpdf.git",
+                "reference": "9c716d808a5692604078456e7991ae75fe81bf86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/appotter/mpdf/zipball/9c716d808a5692604078456e7991ae75fe81bf86",
+                "reference": "9c716d808a5692604078456e7991ae75fe81bf86",
+                "shasum": ""
+            },
+            "require": {
+                "appotter/jpgraph": "~4",
+                "ext-mbstring": "*",
+                "php": ">=5.0.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "mpdf.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ian Back"
+                }
+            ],
+            "description": "A PHP class to generate PDF files from HTML with Unicode/UTF-8 and CJK support",
+            "homepage": "http://www.mpdf1.com",
+            "keywords": [
+                "pdf",
+                "php",
+                "utf-8"
+            ],
+            "time": "2017-07-07T10:07:54+00:00"
         },
         {
             "name": "bower-asset/bootstrap",

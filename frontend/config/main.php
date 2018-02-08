@@ -1,6 +1,7 @@
 <?php
 use \yii\web\Request;
 use \yii\web\View;
+use kartik\mpdf\Pdf;
 
 $baseUrl = str_replace ( '/frontend/web', '', (new Request())->getBaseUrl() );
 $params = array_merge(
@@ -16,13 +17,33 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
-      
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@backend/mail',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.mandrillapp.com',
+                'username' => 'teerawutkt3@gmail.com',
+                'password' => 'Teerawut_04012538',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+        ],
+        
+        'pdf' => [
+            'class' => Pdf::classname(),
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
+            // refer settings section for all configuration options
+        ],
         'assetManager' => [
             'bundles' => [
                 'dosamigos\google\maps\MapAsset' => [
                     'options' => [
-                        'key' => 'AIzaSyArBQOuYHVIZ0ZIJIXJ4n0GW4FtjAUwInk',// ใส่ API ตรงนี้ครับ
-                        'language' => 'th',
+                   //     'key' => 'AIzaSyArBQOuYHVIZ0ZIJIXJ4n0GW4FtjAUwInk',// ใส่ API ตรงนี้ครับ
+                      //  'language' => 'th',
                       //  'version' => '3.1.18'
                     ]
                 ]
@@ -35,6 +56,11 @@ return [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [
+                'google' => [
+                    'class' => 'yii\authclient\clients\Google',
+                    'clientId'     =>'482701624128-umf72m74ccar9gu7tf7ivvt348qk525m.apps.googleusercontent.com',
+                    'clientSecret' =>'FgTbIbUrEu-PdhVnCcalOmdP',
+                ],
                 'facebook' => [
                     'class' => 'yii\authclient\clients\Facebook',
                     'clientId' => '298611097298842',

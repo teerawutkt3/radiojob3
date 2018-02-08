@@ -7,7 +7,7 @@ $this->title = 'นำทาง';
 <div class="site-index">
 <script type="text/javascript" src="https://dl.dropboxusercontent.com/s/u0735yw5gepbtax/RouteBoxer_packed.js"></script>
 <script type="text/javascript" src="https://dl.dropboxusercontent.com/s//fyvzhaoqi3r6nps/RouteBoxer.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlMCXTr74f7ah640MrjFbb3V4KUHhqRis&language=th&libraries=places"></script>
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlMCXTr74f7ah640MrjFbb3V4KUHhqRis&language=th&libraries=places"></script> -->
 </head>
 
 <?php //$id = $_GET['id'];

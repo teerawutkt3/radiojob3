@@ -11,6 +11,8 @@ use Yii;
  * @property string $educational_institution
  * @property string $education
  * @property string $branch
+* @property integer$birth
+* @property string $tel 
  * @property string $experience
  * @property string $work_skill
  * @property string $language
@@ -23,6 +25,7 @@ class UserExtention extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    //public $birth;
     public static function tableName()
     {
         return 'user_extention';
@@ -34,7 +37,9 @@ class UserExtention extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['experience', 'work_skill', 'language'], 'string'],
+            [['birth'], 'required'],
+            [[ 'user_id'], 'integer'], 
+            [['tel','experience', 'work_skill', 'language'], 'string'],
             [['user_id'], 'integer'],
             [['educational_institution', 'education', 'branch'], 'string', 'max' => 50],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -48,6 +53,8 @@ class UserExtention extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'birth' => 'วันเกิด',
+            'tel' => 'เบอร์ติดต่อ', 
             'educational_institution' => 'สถานศึกษา',
             'education' => 'วุฒิการศึกาษา',
             'branch' => 'สาขาวิชา',

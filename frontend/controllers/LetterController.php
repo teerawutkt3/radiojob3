@@ -6,9 +6,41 @@ use common\models\Messages;
 use yii\web\NotFoundHttpException;
 use frontend\models\MessageSearch;
 use frontend\models\MessageSenderSearch;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 class LetterController extends \yii\web\Controller
 {
+    
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'actions' => [
+                        
+                        ],
+                        'roles' => ['?'] //ยังไม่ได้ login
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    
+                ]
+            ]
+        ];
+    }
     public function actionIndex(){
         $searchModel = new MessageSearch();
      

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2017 at 04:11 PM
+-- Generation Time: Dec 24, 2017 at 11:10 PM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.1.4
 
@@ -54,7 +54,7 @@ CREATE TABLE `address` (
 INSERT INTO `address` (`id`, `data_address`, `district_id`, `district_code`, `district_name`, `amphur_id`, `amphur_code`, `amphur_name`, `province_id`, `province_code`, `province_name`, `geo_id`, `geo_name`, `zipcode`, `lat`, `long`) VALUES
 (2, '19/20', 5798, '560102', 'แม่ต๋ำ   ', 648, '5601', 'เมืองพะเยา   ', 44, '56', 'พะเยา   ', 1, 'ภาคเหนือ', '56000', 19.142, 99.912),
 (3, '85 หมู่ 6', 5383, '510404', 'ดงดำ   ', 598, '5104', 'ลี้   ', 39, '51', 'ลำพูน   ', 1, 'ภาคเหนือ', '51110', 17.742, 99.062),
-(4, '23/3', 63, '100903', '*พระโขนง   ', 9, '1009', 'เขตพระโขนง   ', 1, '10', 'กรุงเทพมหานคร   ', 2, 'ภาคกลาง', '', 13.6911, 100.614),
+(4, '23/3', 63, '100903', '*พระโขนง   ', 9, '1009', 'เขตพระโขนง   ', 1, '10', 'กรุงเทพมหานคร   ', 2, 'ภาคกลาง', '', NULL, NULL),
 (5, '19/2', 5797, '560101', 'เวียง   ', 648, '5601', 'เมืองพะเยา   ', 44, '56', 'พะเยา   ', 1, 'ภาคเหนือ', '56000', 19.172, 99.894),
 (6, '98/2', 1760, '300101', 'ในเมือง   ', 215, '3001', 'เมืองนครราชสีมา   ', 19, '30', 'นครราชสีมา   ', 3, 'ภาคตะวันออกเฉียงเหนือ', '30000', 14.9799, 102.098),
 (7, '99/7', 8289, '901101', 'หาดใหญ่   ', 928, '9011', 'หาดใหญ่   ', 70, '90', 'สงขลา   ', 6, 'ภาคใต้', '90110', 7.01, 100.474),
@@ -64,7 +64,8 @@ INSERT INTO `address` (`id`, `data_address`, `district_id`, `district_code`, `di
 (11, '19/2 ', 5797, '560101', 'เวียง   ', 648, '5601', 'เมืองพะเยา   ', 44, '56', 'พะเยา   ', 1, 'ภาคเหนือ', '56000', 19.172, 99.894),
 (12, '33/1', 6437, '630601', 'แม่สอด   ', 725, '6306', 'แม่สอด   ', 50, '63', 'ตาก   ', 4, 'ภาคตะวันตก', '63110', 16.716, 98.573),
 (13, '34', 5797, '560101', 'เวียง   ', 648, '5601', 'เมืองพะเยา   ', 44, '56', 'พะเยา   ', 1, 'ภาคเหนือ', '56000', 19.172, 99.894),
-(14, '94 หมู่ 1', 6441, '630605', 'แม่กาษา   ', 725, '6306', 'แม่สอด   ', 50, '63', 'ตาก   ', 4, 'ภาคตะวันตก', '63110', 16.897, 98.654);
+(14, '94 หมู่ 1', 6441, '630605', 'แม่กาษา   ', 725, '6306', 'แม่สอด   ', 50, '63', 'ตาก   ', 4, 'ภาคตะวันตก', '63110', 16.897, 98.654),
+(16, '269 ถนน พหลโยธิน', 5803, '560107', 'บ้านต๋อม   ', 648, '5601', 'เมืองพะเยา   ', 44, '56', 'พะเยา   ', 1, 'ภาคเหนือ', '56000', 19.1905, 99.8776);
 
 -- --------------------------------------------------------
 
@@ -1103,7 +1104,7 @@ INSERT INTO `amphures` (`AMPHUR_ID`, `AMPHUR_CODE`, `AMPHUR_NAME`, `AMPHUR_NAME_
 CREATE TABLE `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created_at` int(11) DEFAULT NULL
+  `created_at` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1111,7 +1112,7 @@ CREATE TABLE `auth_assignment` (
 --
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
-('public_relations', 1, 0),
+('public_relations', 1, 1514021026),
 ('public_relations', 5, 0),
 ('public_relations', 7, 0),
 ('radiologist', 4, 0),
@@ -18020,8 +18021,8 @@ CREATE TABLE `joinwork` (
   `comment` text COLLATE utf8_unicode_ci COMMENT 'แสดงความคิดเห็น',
   `point` int(11) DEFAULT NULL COMMENT 'คะแนนร่วมงาน',
   `work_id` int(11) DEFAULT NULL COMMENT 'ไอดีงาน',
-  `created_work` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL COMMENT 'ไอผู้ใช้',
+  `created_work` int(11) DEFAULT NULL COMMENT 'ไอดีผู้ประกาศงาน',
+  `user_id` int(11) DEFAULT NULL COMMENT 'ไอดีผู้ใช้',
   `join_status` int(2) DEFAULT NULL COMMENT 'สถานะ',
   `join_created_at` int(11) NOT NULL DEFAULT '0' COMMENT 'ร่วมงานเมื่อ',
   `join_updated_at` int(11) NOT NULL DEFAULT '0' COMMENT 'อัปเดตเมื่อ'
@@ -18033,7 +18034,8 @@ CREATE TABLE `joinwork` (
 
 INSERT INTO `joinwork` (`id`, `comment`, `point`, `work_id`, `created_work`, `user_id`, `join_status`, `join_created_at`, `join_updated_at`) VALUES
 (1, NULL, NULL, 6, 5, 1, 0, 1511951712, 1511957972),
-(3, NULL, NULL, 7, 4, 1, 1, 1511955866, 1511955876);
+(3, NULL, NULL, 7, 4, 1, 0, 1511955866, 1511955876),
+(5, NULL, NULL, 18, 1, 9, 1, 1514021363, 1514022241);
 
 -- --------------------------------------------------------
 
@@ -18058,7 +18060,8 @@ INSERT INTO `messages` (`id`, `description`, `to_user_id`, `created_by_user_id`,
 (1, 'มาร่วมงานกัน', 6, 1, 1511352588, 1511352588),
 (2, 'มาร่วมงานกันเถอะ', 1, 4, 1511973701, 1511973701),
 (3, 'มาๆทำงานกัน', 9, 4, 1511975725, 1511975725),
-(4, 'ตอบรับการทำงาน', 4, 9, 1511976150, 1511976150);
+(4, 'ตอบรับการทำงาน', 4, 9, 1511976150, 1511976150),
+(5, 'มาร่วมงานกัน', 9, 1, 1513882472, 1513882472);
 
 -- --------------------------------------------------------
 
@@ -18307,7 +18310,8 @@ INSERT INTO `work` (`id`, `name_office`, `description`, `belong`, `number`, `edu
 (3, 'ศูนย์ CT บรษัทโตโมกราฟ', 'ค่าวิชาชีพ\r\nค่าที่พัก\r\nค่า intensive\r\nค่าครองชีพ\r\nค่าเสี่ยงภัย\r\nค่าเวนโอที(เปอร์เคสหลังเที่ยงคืน)', 'outsource', 2, '', '', 0, 45000, NULL, 1510156800, 1510156800, '0824367685', 1, 1508901360, 1, 7),
 (6, 'โรงพยาบาลพะเยา', 'รับสมัครนักรังสีเทคนิค\r\nทำงานทางด้าน x-ray', 'ราชการ', 2, NULL, '-ค่าเดืนทาง\r\n-ค่าทำ OT 500/ชม.\r\n-ค่ารักษาพยาบาลฟรี\r\n-ค่าเสี่ยงภัย\r\n-ค่าที่พัก\r\n-ค่าอาหารรายเดือน', 238, 25000, 35000, 8, 20, '0884578565', 5, 1511500991, 1, 11),
 (7, 'โรงพยาบาลแม่สอด', 'รับสมัครนักรังสี\r\nปรพเภทงาน x-ray CT scan\r\n', 'ราชการ', 2, NULL, 'ค่าเดืนทาง', 30, 30000, 45000, 7, 18, '055554576', 1, 1511955849, 1, 12),
-(8, 'โรงพยาบาลพะเยาราม', 'รับสมัครนักรังสี', 'เอกชน', 2, NULL, '', 0, 25000, 34000, 1511953200, 1511953200, '', 5, 1511956747, 1, 13);
+(8, 'โรงพยาบาลพะเยาราม', 'รับสมัครนักรังสี', 'เอกชน', 2, NULL, '', 0, 25000, 34000, 1511953200, 1511953200, '', 5, 1511956747, 1, 13),
+(18, 'โรงพยาบาลพะเยา', 'รับสมัครนักรังสี', '', NULL, NULL, '', 0, 10000, 13000, 1514044800, 1514044800, '098989569', 1, 1513883352, 1, 16);
 
 -- --------------------------------------------------------
 
@@ -25994,7 +25998,7 @@ ALTER TABLE `zipcodes`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `amphures`
 --
@@ -26034,12 +26038,12 @@ ALTER TABLE `geography`
 -- AUTO_INCREMENT for table `joinwork`
 --
 ALTER TABLE `joinwork`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `provinces`
 --
@@ -26064,7 +26068,7 @@ ALTER TABLE `user_extention`
 -- AUTO_INCREMENT for table `work`
 --
 ALTER TABLE `work`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `zipcodes`
 --

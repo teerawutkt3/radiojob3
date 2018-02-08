@@ -64,7 +64,7 @@ class ContactController extends Controller
     public function actionCreate()
     {
         $model = new Contacts();
-        if (\Yii::$app->user->isGuest)$this->layout = 'main3';
+        if (\Yii::$app->user->isGuest)$this->layout = 'main4';
         else $this->layout = 'main';
         $alert_success=0;
         if ($model->load(Yii::$app->request->post() ) ) {

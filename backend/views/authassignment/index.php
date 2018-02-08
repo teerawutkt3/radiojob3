@@ -72,8 +72,8 @@ color : #FFFFFF;
     <?php $count=0; foreach ($dataProvider->models as $data):?>
       <tr>
       <td><?=++$count?></td>
-        <td><?=$data->user->fullname?></td>
-        <td><?=$data->user->email?></td>
+        <td><?=(!$data->user->fullname || !isset($data->user->fullname)?"":$data->user->fullname)?></td>
+        <td><?=(!$data->user->email?"":$data->user->email)?></td>
         <td class="text-center"><?php 
                     if ($data->itemName->description == 'นักรังสีเทคนิค'){
                         echo '<span class="label label-success">'.$data->itemName->description.'</span>';

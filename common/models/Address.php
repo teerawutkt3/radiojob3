@@ -30,6 +30,7 @@ class Address extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+   
     public static function tableName()
     {
         return 'address';
@@ -72,8 +73,8 @@ class Address extends \yii\db\ActiveRecord
             'geo_id' => '',
             'geo_name' => 'ภาค',
             'zipcode' => 'รหัสไปรษณีย์', 
-            'lat' => 'Lat',
-            'long' => 'Long',
+            'lat' => '',
+            'long' => '',
         ];
     }
 

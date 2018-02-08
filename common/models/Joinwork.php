@@ -81,7 +81,8 @@ class Joinwork extends \yii\db\ActiveRecord
             'lastSearch' => '',
            'name_work' => '',
             'nameSearch' => 'ชื่อ - นามสกุล',
-            'name_user' => 'ชื่อ - นามสกุล'
+            'name_user' => 'ชื่อ - นามสกุล',
+           'status' => 'สถานะ'
  
         ];
     }

@@ -6,6 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * User model
@@ -17,11 +18,14 @@ use yii\web\IdentityInterface;
  * @property string $password_reset_token
  * @property string $email
  * @property string $auth_key
+ 	* @property string $gmail_id
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
  * @property Districts $address
+	* @property string $img
+* @property integer $status_img
  * @property UserExtention[] $userExtentions
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -60,7 +64,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username','fname','lname','fb_id', 'auth_key', 'password_hash','province_name', 'password_reset_token', 'email','created_at','updated_at','address_id'], 'safe'],
+            //[['img'], 'required'],
+            [['img'],'file','skipOnEmpty' => true, 'extensions' => 'jpg,png'],
+            [['img'], 'file', 'maxSize'=>'100000000'],
+            [['username','fname','lname','fb_id','gmail_id', 'auth_key', 'password_hash','province_name', 'password_reset_token', 'email','created_at','updated_at','address_id'], 'safe'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['address_id'], 'exist', 'skipOnError' => true, 'targetClass' => Districts::className(), 'targetAttribute' => ['address_id' => 'DISTRICT_ID']],
@@ -68,6 +75,27 @@ class User extends ActiveRecord implements IdentityInterface
             
         ];
     }
+    
+    public function upload()
+    {
+        $image = UploadedFile::getInstance($this, 'img');
+        
+        // if no image was uploaded abort the upload
+        if (empty($image)) {
+            return false;
+        }
+        
+        // store the source file name
+        $this->filename = $image->name;
+        $ext = end((explode(".", $image->name)));
+        
+        // generate a unique file name
+        $this->avatar = Yii::$app->security->generateRandomString().".{$ext}";
+        
+        // the uploaded image instance
+        return $image;
+    }
+    
     public function attributeLabels()
     {
         return [
@@ -76,6 +104,7 @@ class User extends ActiveRecord implements IdentityInterface
             'fname' => 'ชื่อ',
             'lname' => 'สกุล',
             'fb_id' => 'facebook id',
+            'gmail_id' => 'google_id',
             'auth_key' => 'Auth Key',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
@@ -88,6 +117,7 @@ class User extends ActiveRecord implements IdentityInterface
             'province_id' => '',
             'amphur_id'=>'',
             'district_id'=>'',
+            'img'=>'',
          
         ];
     }

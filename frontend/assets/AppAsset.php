@@ -16,13 +16,6 @@ class AppAsset extends AssetBundle
         'css/fonts.css',
         'css/bootstrap.css',
     ];
-    public $js = 
-        [
-            'https://maps.googleapis.com/maps/api/js?key=AIzaSyArBQOuYHVIZ0ZIJIXJ4n0GW4FtjAUwInk&callback=initMap',
-            'js/RouteBoxer.js',
-            'js/RouteBoxer_packed.js',
-            
-        ];
 
     public $depends = [
         'yii\web\YiiAsset',

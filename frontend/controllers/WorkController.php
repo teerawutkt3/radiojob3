@@ -14,7 +14,6 @@ use common\models\Provinces;
 use common\models\Amphures;
 use common\models\Districts;
 use common\models\Zipcodes;
-use common\models\Fulladdress;
 use common\components\MyDate;
 use frontend\models\WorkSearchSort;
 use frontend\models\WorkSearchNormal;
@@ -25,6 +24,8 @@ use frontend\models\WorkSearchBenefits;
 use frontend\models\UserRadiologistSearch;
 use common\models\AuthAssignment;
 use common\models\Calendar;
+use common\models\User;
+use yii\filters\AccessControl;
 
 
 /**
@@ -44,42 +45,36 @@ class WorkController extends Controller
                     'delete' => ['POST'],
                 ],
              ],
-//             'access' => [
-//                 'class' => AccessControl::className(),
-//                 'rules' => [
-//                     [
-//                         'allow' => true,
-//                         'actions' => [
-//                             'index'
-//                         ],
-//                         'roles' => ['@'] //ยังไม่ได้ login
-//                     ],
-//                     [
-//                         'allow' => true,
-//                         'actions' => [  
-//                             'work-search-normal',
-//                             'work-search-view',
-//                             'work-search-sort'
-//                         ],
-//                         'roles' => ['?'],
-//                     ],
-//                     [
-//                         'allow' => true,
-//                         'actions' => [
-//                             'index','view'
-//                         ],
-//                         'roles' => ['admin']
-//                     ],
-//                     [
-//                         'allow' => true,
-//                         'actions' => [
-//                             'create','delete','index','view','update'
-//                         ],
-//                         'roles' => ['hospital']
-//                     ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => [
+                            '/site/login',
+                            '/site/about',
+                            '/contact/create',
+                            'work-search-normal',
+                            'work-search-normal-list',
+                            'work-search-sort',
+                            'work-search-sort-list',
+                            'work-search-benefits',
+                            'work-search-benefits-list',
+                            'work-search-map',
+                            'work-search-view',
+                            'google-directions',
+                            
+                        ],
+                        'roles' => ['?'] //ยังไม่ได้ login
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                     
-//                 ]
-//             ]  
+                ]
+            ]  
         ];
     }
 
@@ -89,9 +84,45 @@ class WorkController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new WorkSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $inbox = Joinwork::find()->where(['join_status'=>Joinwork::STATUS_WAIT,'created_work'=>\Yii::$app->user->id])->count();
+        $this_month = \Yii::$app->formatter->asDate(time(),'dd M yyyy');
+        $this_month = substr($this_month, 3, 2);  //
+        $this_month = (int)$this_month;
+        //  var_dump($this_month);// die();
+        $check_status_work  = Work::find()->where(['work_user_id'=>\Yii::$app->user->id,'work_status'=>Work::STATUS_ACTIVE])->all();
+        
+        foreach ($check_status_work as $check):
+        $month = \Yii::$app->formatter->asDate($check->work_created_at,'dd M yyyy');
+        $month = substr($month, 3, 2);  //
+        $month = (int)$month;
+        
+        if ($this_month>$month || $this_month == $month){
+            
+            $month_result = $this_month - $month;
+        }else {
+            $month_result = (12-$month)+$this_month;
+            
+        }
+        // var_dump($month_result);
+        if ($month_result>5){
+            $alert="alert";
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'inbox' => $inbox,
+                'alert'=>$alert,
+                'work_id'=>$check->id,
+            ]);
+            //             $check->work_status = Work::STATUS_DELETED;
+            //             $check->save();
+        }else{
+            // ไม่ทำอะไร
+        }
+        //var_dump($month);
+        endforeach;//die();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -261,11 +292,6 @@ class WorkController extends Controller
             'schedule' => $schedule,
         ]);
     }
-    public function actionMap(){
-        $model = new Work();
-        
-        return $this->render('map',['model'=>$model,'key'=>'AIzaSyArBQOuYHVIZ0ZIJIXJ4n0GW4FtjAUwInk']);
-    }
 
 
     /**
@@ -310,13 +336,29 @@ class WorkController extends Controller
             'data_event' => $data_event,
         ]);
     }
+    
+    public function actionLocation(){
+        return $this->render('location');
+    }
     public function actionDeletecalendar(){
     
         $id = $_GET['id'];
         $user_id = $_GET['user_id'];
+     
         $calendar = Calendar::find()->where(['id'=>$id])->one();
         $calendar->delete();
         return $this->redirect('calendar?id='.$user_id);
+    }
+    public function actionGoogleDirections(){
+        return $this->render('google-directions',[
+            'lat' =>$_GET['lat'],
+            'long' => $_GET['long'],
+            'name_office' => $_GET['name_office'],
+        ]);
+    }
+    public function actionEmail(){
+        return $this->render('email');
+        
     }
     
   
@@ -328,29 +370,55 @@ class WorkController extends Controller
      */
     public function actionCreate()
     {
+        if ($_GET){
+            if ($_GET['lat'] == ""){
+                return $this->redirect('location?alert=avtive_alert');
+            }else{
+                //get lat long
+            }
+        }else{
+            return $this->redirect('location?alert=avtive_alert');
+        }
         $model = new Work();
         $address = new Address();
         if ($model->load(Yii::$app->request->post()) ) {
+        
             if ($address->load(\Yii::$app->request->post())){
-               
+               // var_dump($model->time_begin);
+                $model->time_begin = MyDate::Time2int($model->time_begin);
+                $model->time_end = MyDate::Time2int($model->time_end);
+              //  var_dump(\Yii::$app->formatter->asTime(MyDate::Time2int($model->time_begin)));
+               // die();
                 /* geo */
                 $geo = Geography::findOne($address->geo_id);
                 $address->geo_name = $geo->GEO_NAME;
                 
                 /* province */
                 $province = Provinces::findOne($address->province_id);
+                if (!$province){
+                    return $this->redirect('update?id='.$id.'&alert=active_alert');
+                }else{
                 $address->province_code = $province->PROVINCE_CODE;
                 $address->province_name = $province->PROVINCE_NAME;
+                }
                 
                 /* amphur */
                 $amphur = Amphures::findOne($address->amphur_id);
+                if (!$amphur){
+                    return $this->redirect('update?id='.$id.'&alert=active_alert');
+                }else{
                 $address->amphur_code = $amphur->AMPHUR_CODE;
                 $address->amphur_name = $amphur->AMPHUR_NAME;
+                }
                 
                 /* district */
                 $district = Districts::findOne($address->district_id);
-                $address->district_code = $district->DISTRICT_CODE;
-                $address->district_name = $district->DISTRICT_NAME;
+                if (!$district){
+                    return $this->redirect('update?id='.$id);
+                }else{
+                    $address->district_code = $district->DISTRICT_CODE;
+                    $address->district_name = $district->DISTRICT_NAME;
+                }
                 
                 /* zipcode */
                 $zipcode = Zipcodes::find()->where(['district_code'=>$address->district_code])->limit(1)->one();
@@ -359,7 +427,7 @@ class WorkController extends Controller
                 
                 //    var_dump($address->zipcode); die();
                 /* lat long */
-                $lat_long = Fulladdress::find()->where(['DISTRICT_CODE'=>$address->district_code])->limit(1)->one();
+               /*   $lat_long = Fulladdress::find()->where(['DISTRICT_CODE'=>$address->district_code])->limit(1)->one();
                 if ($lat_long == null) {
                     $address->lat = "";
                     $address->long = "";
@@ -367,19 +435,122 @@ class WorkController extends Controller
                     if ($zipcode==NULL) $address->lat = "";
                     else  $address->lat = $lat_long->LAT;
                     if ($zipcode==NULL) $address->long = "";
-                    else $address->long = $lat_long->LONG;
-                }
-                if ($address->save())
+                    e lse $address->long = $lat_long->LONG;
+                } */
+                    
+                  $lat = (float)$address->lat;
+                  $long = floatval( $address->long);
+                  $address->lat = $lat;
+                  $address->long = $long; 
+                // var_dump($address->lat);die();
+//                   var_dump($address->long);
+//                   var_dump($address->lat);die();
+                    if ($address->save()){
                     $model->work_address_id =  $address->id;
                     $model->work_status = Work::STATUS_ACTIVE;
                     $model->work_user_id = \Yii::$app->user->id;
                     //coutn str benefits
                     $count_benefits = strlen($model->benefits);
                     $model->count_benefits = $count_benefits;
-                    if ($model->save()) return $this->redirect(['view', 'id' => $model->id]);
-
-              
+                    if ($model->save()){
+                        //$address->province_name;
+                        //var_dump($address->province_id);die();
+                        $address_users = Address::find()->where(['province_id'=>$address->province_id])->all();
+                     
+                        foreach ($address_users as $address_user){
+                           // var_dump($address_user->province_id);
+                            $send_email_user =  User::findOne(['address_id'=>$address_user->id]);
+                            if (!$send_email_user){
+                                
+                            }else{
+                              
+                       /*  $strTo = $send_email_user->email;
+                        $strSubject = $model->name_office;
+                        $strHeader = "From: Radiojob@work.tk";
+//                         $html =   \Yii::$app->formatter->as( 'รายละเอียดงาน<br>'.
+//                              \Yii::$app->formatter->asNtext($model->description).'</br>สวัสดิการ<br>'.
+//                              \Yii::$app->formatter->asNtext($model->benefits));
+                        $strMessage =
+ 'หน่วยงาน : '.$model->belong.
+'
+'.
+'รายละเอียด : '.
+ '
+ '.
+$model->description.
+' 
+'.
+'เวลาทำงาน : '.\Yii::$app->formatter->asTime($model->time_begin,'kk:mm').' - '.\Yii::$app->formatter->asTime($model->time_end,'kk:mm').
+'
+'.
+'สวัสดิการ : '.
+'
+'.
+$model->benefits.
+'
+'.
+'รายได้ : '.$model->money1.' - '.$model->money2.
+'
+'.
+'เบอร์ติดต่อ : '.$model->tel.
+'
+'.
+'ที่อยู่ : '.$model->address->nameAddress;
+                        
+                      
+                        $flgSend = mail($strTo,$strSubject,$strMessage,$strHeader);  // @ = No Show Error //
+                         */
+                        /* -------------------------------------------------------------------------------------------------------------------------- */
+                        $to  = $send_email_user->email;
+                        
+                        // subject
+                        $subject = $model->name_office;
+                        
+                        // message
+                        $message = '
+<html>
+<head>
+  <title>งานประกาศ</title>
+</head>
+<body>
+  <p><u>หน่วยงาน</u> : '.$model->belong.'</p>
+    <p><u>รายละเอียด </u>:</p>
+<p>'.\Yii::$app->formatter->asNtext($model->description).'</p>
+<p><u>เวลาทำงาน</u> : '.\Yii::$app->formatter->asTime($model->time_begin,"kk:mm").' - '.\Yii::$app->formatter->asTime($model->time_end,"kk:mm").'</p>
+<p><u>สวัสดีการ </u>: </p>
+<p>'.\Yii::$app->formatter->asNtext($model->benefits).'</p>
+<p><u>รายได้ </u>: '.$model->money1.' - '.$model->money2.' บาท</p>
+<p><u>เบอร์ติดต่อ </u>: '.$model->tel.' </p>
+<p><u>ที่อยู่ </u> : '.$model->address->nameAddress.' </p>
+  <a href="http://www.radiolab.tk/joinwork/register?id='.$model->id.'" >Link RadioJob สมัครเลย</a>
+<p><a href="http://www.radiolab.tk/work/view?id='.$model->id.'" >ดูรายละเอียดเพิ่มเติม</a></p>
+</body>
+</html>
+';
+                        
+                        // To send HTML mail, the Content-type header must be set
+                        $headers  = 'MIME-Version: 1.0' . "\r\n";
+                        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                        
+                        // Additional headers
+                        //$headers .= 'To: Mary <mary@example.com>, Kelly <kelly@example.com>' . "\r\n";
+                        $headers .= 'From: Radiojob <Radiojob@work.tk>' . "\r\n";
+                        //$headers .= 'Cc: birthdayarchive@example.com' . "\r\n";
+                        //$headers .= 'Bcc: birthdaycheck@example.com' . "\r\n";
+                        
+                        // Mail it
+                       // var_dump($message); die();
+                        mail($to, $subject, $message, $headers);
+                       
+                        $this->redirect(['view', 'id' => $model->id]); 
+                      } /* end else */
+                        }/*  endforeach; */
+                      
+                        
+                    }
             }
+            }
+            /* first if */
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -417,16 +588,29 @@ class WorkController extends Controller
                 $address->geo_name = $geo->GEO_NAME;
                 /* province */
                 $province = Provinces::findOne($address->province_id);
-                $address->province_code = $province->PROVINCE_CODE;
-                $address->province_name = $province->PROVINCE_NAME;
+                if (!$province){
+                    return $this->redirect('update?id='.$id.'&alert=active_alert');
+                }else{
+                    $address->province_code = $province->PROVINCE_CODE;
+                    $address->province_name = $province->PROVINCE_NAME;
+                }
                 /* amphur */
                 $amphur = Amphures::findOne($address->amphur_id);
-                $address->amphur_code = $amphur->AMPHUR_CODE;
-                $address->amphur_name = $amphur->AMPHUR_NAME;
+                if (!$amphur){
+                    return $this->redirect('update?id='.$id.'&alert=active_alert');
+                }else{
+                    $address->amphur_code = $amphur->AMPHUR_CODE;
+                    $address->amphur_name = $amphur->AMPHUR_NAME;
+                }
                 /* district */
                 $district = Districts::findOne($address->district_id);
-                $address->district_code = $district->DISTRICT_CODE;
-                $address->district_name = $district->DISTRICT_NAME;
+                if (!$district){
+                    return $this->redirect('update?id='.$id.'&alert=active_alert');
+                }else{
+                    $address->district_code = $district->DISTRICT_CODE;
+                    $address->district_name = $district->DISTRICT_NAME;
+                }
+           
                 /* zipcode */
                 $zipcode = Zipcodes::find()->where(['district_code'=>$address->district_code])->limit(1)->one();
                 if ($zipcode==NULL)$address->zipcode = "";
@@ -434,7 +618,7 @@ class WorkController extends Controller
                 
                 //    var_dump($address->zipcode); die();
                 /* lat long */
-                $lat_long = Fulladdress::find()->where(['DISTRICT_CODE'=>$address->district_code])->limit(1)->one();
+              /*   $lat_long = Fulladdress::find()->where(['DISTRICT_CODE'=>$address->district_code])->limit(1)->one();
                 if ($lat_long == null) {
                     $address->lat = "";
                     $address->long = "";
@@ -443,10 +627,13 @@ class WorkController extends Controller
                     else  $address->lat = $lat_long->LAT;
                     if ($zipcode==NULL) $address->long = "";
                     else $address->long = $lat_long->LONG;
-                }
+                } */
                
                 //var_dump()
               //  var_dump($model->time_begin); 
+                    $address->lat = $address->lat;
+                    $address->long = $address->long;
+                  //  var_dump($address->long); die();
                 if ($address->save()){      
                     $model->work_address_id = $address->id;
                     $model->time_begin = MyDate::Time2int($model->time_begin);
@@ -482,6 +669,7 @@ class WorkController extends Controller
      */
     public function actionDelete($id)
     {
+        // var_dump($id);die();
         $model = $this->findModel($id);
       //  var_dump($model); die();
         $address = Address::find()->where(['id'=>$model->work_address_id])->one();

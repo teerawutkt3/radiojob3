@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\widgets\Alert;
+use yii\filters\AccessControl;
 
 /**
  * BelongController implements the CRUD actions for Belong model.
@@ -27,8 +28,26 @@ class BelongController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'actions' => [
+                        ],
+                        'roles' => ['?'] //ยังไม่ได้ login
+                    ],
+                    [
+                        'actions' => [],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    
+                ]
+            ]
         ];
     }
+
 
     /**
      * Lists all Belong models.

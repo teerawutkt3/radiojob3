@@ -88,10 +88,12 @@ class WorkSearch extends Work
        //    ->andFilterWhere(['==','workAddress',(int)$this->geo_id]);
            // ->andFilterWhere(['like', 'tel', $this->tel]);
             if (!empty($this->created_at) ){
+              //  var_dump($this->work_created_at); die();
                 $query->andFilterWhere(['<= ','work_created_at',MyDate::TimeDigit2int($this->work_created_at)])->orderBy(['work_created_at'=>SORT_DESC]);
             }
             
             if (!empty($params['worksearch-work_created_at_convert'])){
+              //  var_dump($params['worksearch-work_created_at_convert']); die();
                 $query->andFilterWhere(['<= ','work_created_at',MyDate::TimeDigit2int($params['worksearch-work_created_at_convert'])])->orderBy(['work_created_at'=>SORT_DESC]);
             }
 

@@ -14,6 +14,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\User;
 use common\models\AuthAssignment;
+use common\models\Work;
 
 /**
  * Site controller
@@ -75,20 +76,23 @@ class SiteController extends Controller
     public function successCallback($client){
         
         $attributes = $client->getUserAttributes();
-     //   print_r($attributes);
-   //    die();
+      //  var_dump($attributes['id']);
+      //  var_dump('<br>----------------------------------------------------------<br>');
+      // print_r($attributes);
+      // die();
         if ($attributes){
             $user = User::find()
             ->where(['fb_id'=>$attributes['id']])
-            //	->orWhere(['gmail_id'=>$attributes['id']])
+            ->orWhere(['gmail_id'=>$attributes['id']])
             ->one();
             if (!$user){
                 if (isset($attributes['isPlusUser'])){
                     $user = new User();
                     $user->fname = $attributes['displayName'];
-                    //		$user->gmail_id = $attributes['id'];
+                    $user->gmail_id = $attributes['id'];
                     $user->email = $attributes['emails'][0]['value'];
-                    $user->username = $attributes['emails'][0]['value'];
+                    $user->username = $attributes['id'];
+                    //var_dump($user->username); die();
                     Yii::$app->session->set('user_signup', $user);
                     Yii::$app->response->redirect([
                         "/site/register",
@@ -99,7 +103,7 @@ class SiteController extends Controller
                     $user->fname = $attributes['name'];
                     $user->fb_id = $attributes['id'];
                     $user->email = !isset($attributes['email'])?"":$attributes['email'];
-                    $user->username = !isset($attributes['email'])?"":$attributes['email'];
+                    $user->username = !isset($attributes['id'])?"":$attributes['id'];
                     \Yii::$app->session->set('user_signup', $user);
                     Yii::$app->response->redirect([
                         "/site/register",
@@ -164,7 +168,10 @@ class SiteController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
+    {  
+
+       
+      //  var_dump($check_status_work);die();
         if(!\Yii::$app->user->isGuest){
                 if (\Yii::$app->user->can('radiologist')){
                     return $this->redirect('/joinwork/data-work-radiologist');
@@ -190,7 +197,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (\Yii::$app->user->isGuest) $this->layout = 'main3';
+        if (\Yii::$app->user->isGuest) $this->layout = 'main4';
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -248,7 +255,7 @@ class SiteController extends Controller
     public function actionAbout()
     {
         if (\Yii::$app->user->isGuest)
-        $this->layout = 'main3';
+        $this->layout = 'main4';
         else $this->layout= 'main';
         return $this->render('about');
     }
@@ -261,7 +268,7 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
-        if (\Yii::$app->user->isGuest) $this->layout = 'main3';
+        if (\Yii::$app->user->isGuest) $this->layout = 'main4';
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
